@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MdArrowBack } from "react-icons/md";
 import { toast } from "react-hot-toast";
 import { RiLoader2Fill } from "react-icons/ri";
+import { useTranslation } from "next-i18next";
 import { resetPassword } from "@/utils/api-service";
 
 interface SetNewPasswordStepProps {
@@ -18,6 +19,7 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { t, i18n } = useTranslation("common");
 
   const getPasswordStrength = (password: string) => {
     if (password.length === 0) return { level: 0, text: "", color: "" };
@@ -95,9 +97,9 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
           <MdArrowBack size={24} />
         </button>
         <div>
-          <h2 className="text-xl font-bold text-[#05353A]">Set New Password</h2>
+          <h2 className="text-xl font-bold text-[#05353A]">{t("Set New Password")}</h2>
           <p className="text-sm text-[#05353A]/70">
-            Create a strong password for your account
+            {t("Create a strong password for your account")}
           </p>
         </div>
       </div>
@@ -105,7 +107,7 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-[#05353A] mb-2">
-            New Password
+            {t("New Password")}
           </label>
           <div className="relative">
             <input
@@ -116,7 +118,7 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
                 if (error) setError("");
               }}
               className="w-full p-3 rounded-xl border border-[#05353A]/20 focus:outline-none focus:ring-1 focus:ring-[#05353A] pr-10"
-              placeholder="Enter new password"
+              placeholder={t("New Password")}
               required
             />
             <button
@@ -161,7 +163,7 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
 
         <div>
           <label className="block text-sm font-medium text-[#05353A] mb-2">
-            Confirm Password
+            {t("Confirm Password")}
           </label>
           <div className="relative">
             <input
@@ -178,7 +180,7 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
                     : "border-red-500 focus:ring-red-500"
                   : "border-[#05353A]/20 focus:ring-[#05353A]"
               }`}
-              placeholder="Confirm new password"
+              placeholder={t("Confirm Password")}
               required
             />
             <button
@@ -207,7 +209,7 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
               <RiLoader2Fill className="animate-spin ml-2" />
             </span>
           ) : (
-            "Reset Password"
+            <p>{t("Reset Password")}</p>
           )}
         </button>
       </form>

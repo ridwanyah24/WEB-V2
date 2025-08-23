@@ -82,7 +82,7 @@ export default function ForgotPassword() {
                   onClick={() =>
                     setLanguage(language === "en" ? "urh" : "en")
                   }
-                  className="bg-[#F5DEB3] text-[#05353A] px-3 py-1 rounded-md text-sm font-medium"
+                  className="bg-[#F5DEB3] cursor-pointer text-[#05353A] px-3 py-1 rounded-md text-sm font-medium"
                 >
                   {language === "en" ? "Urhobo" : "English"}
                 </button>
@@ -111,7 +111,7 @@ export default function ForgotPassword() {
             </div>
 
             {/* Step Components */}
-            <div className="bg-white rounded-xl p-6">
+            <div className="bg-[#F5DEB3] rounded-xl p-6">
               {currentStep === 1 && (
                 <VerifyUserStep onNext={handleStep1Complete} onClose={handleClose} />
               )}

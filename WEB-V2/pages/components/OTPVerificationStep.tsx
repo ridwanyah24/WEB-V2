@@ -3,6 +3,7 @@ import { MdArrowBack } from "react-icons/md";
 import { toast } from "react-hot-toast";
 import { RiLoader2Fill } from "react-icons/ri";
 import { verifyResetOTP, requestPasswordReset } from "@/utils/api-service";
+import { useTranslation } from "next-i18next";
 
 interface OTPVerificationStepProps {
   email: string;
@@ -21,6 +22,7 @@ const OTPVerificationStep: React.FC<OTPVerificationStepProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const { t, i18n } = useTranslation("common");
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
@@ -72,7 +74,7 @@ const OTPVerificationStep: React.FC<OTPVerificationStepProps> = ({
 
       if (result.success) {
         toast.success(result.message || "OTP verified successfully");
-        
+
         onNext(result.resetToken);
       } else {
         setError(result.error || "Invalid OTP");
@@ -115,9 +117,9 @@ const OTPVerificationStep: React.FC<OTPVerificationStepProps> = ({
           <MdArrowBack size={24} />
         </button>
         <div>
-          <h2 className="text-xl font-bold text-[#05353A]">Verify Code</h2>
+          <h2 className="text-xl font-bold text-[#05353A]">{t("Verify Code")}</h2>
           <p className="text-sm text-[#05353A]/70">
-            Enter the 6-digit code sent to {email}
+            {t("Enter the 6-digit code sent to")} {email}
           </p>
         </div>
       </div>
@@ -125,7 +127,7 @@ const OTPVerificationStep: React.FC<OTPVerificationStepProps> = ({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-[#05353A] mb-3">
-            Verification Code
+            {t("Verification Code")}
           </label>
           <div className="flex justify-center space-x-2">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -159,7 +161,7 @@ const OTPVerificationStep: React.FC<OTPVerificationStepProps> = ({
             disabled={isLoading}
             className="text-[#05353A] text-sm hover:underline disabled:opacity-50"
           >
-            Didn&apos;t receive a code? Resend
+            {t("Didn't receive a code")}? {t("Resend Code")}
           </button>
         </div>
 
@@ -174,7 +176,7 @@ const OTPVerificationStep: React.FC<OTPVerificationStepProps> = ({
               <RiLoader2Fill className="animate-spin ml-2" />
             </span>
           ) : (
-            "Verify Code"
+            <p>{t("Verify Code")}</p>
           )}
         </button>
       </form>
