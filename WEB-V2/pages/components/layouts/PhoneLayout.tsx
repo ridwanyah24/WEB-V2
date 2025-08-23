@@ -30,9 +30,9 @@ function PhoneLayout() {
   return (
     <section
       aria-hidden={true}
-      className="lg:flex lg:flex-col items-center bg-[#FFFFFF] hidden"
+      className="lg:flex lg:flex-col lg:items-center justify-center bg-[#FFFFFF] hidden"
     >
-      <div className=" flex flex-col justify-between">
+      <div className=" flex flex-col justify-between items-center">
         <Image
           src="/guono-mobile.png"
           width="450"

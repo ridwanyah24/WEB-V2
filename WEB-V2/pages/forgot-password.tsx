@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import PhoneLayout from "./components/layouts/PhoneLayout";
@@ -21,12 +21,18 @@ export interface User {
 }
 
 export default function ForgotPassword() {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState("");
   const [resetToken, setResetToken] = useState("");
+  const [language, setLanguage] = useState("urh"); // Default Urhobo
+
+  // Ensure Urhobo loads as default
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language, i18n]);
 
   const handleStep1Complete = (userInfo: User) => {
     setUser(userInfo);
@@ -45,13 +51,9 @@ export default function ForgotPassword() {
   };
 
   const handleBack = () => {
-    if (currentStep === 2) {
-      setCurrentStep(1);
-    } else if (currentStep === 3) {
-      setCurrentStep(2);
-    } else if (currentStep === 4) {
-      setCurrentStep(3);
-    }
+    if (currentStep === 2) setCurrentStep(1);
+    else if (currentStep === 3) setCurrentStep(2);
+    else if (currentStep === 4) setCurrentStep(3);
   };
 
   const handleClose = () => {
@@ -72,16 +74,29 @@ export default function ForgotPassword() {
           <div className="px-4 md:px-8 py-12">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold text-white">
-                {t("Forgot Password")}
+                {t("forgotPassword")}
               </h2>
-              <Link 
-                href="/signin"
-                className="text-[#F5DEB3] hover:text-[#F5DEB3]/80 transition-colors text-xl"
-              >
-                ✕
-              </Link>
+              <div className="flex items-center gap-4">
+                {/* Language Toggle */}
+                <button
+                  onClick={() =>
+                    setLanguage(language === "en" ? "urh" : "en")
+                  }
+                  className="bg-[#F5DEB3] text-[#05353A] px-3 py-1 rounded-md text-sm font-medium"
+                >
+                  {language === "en" ? "Urhobo" : "English"}
+                </button>
+
+                <Link
+                  href="/signin"
+                  className="text-[#F5DEB3] hover:text-[#F5DEB3]/80 transition-colors text-xl"
+                >
+                  ✕
+                </Link>
+              </div>
             </div>
 
+            {/* Progress Dots */}
             <div className="flex justify-center mb-6">
               <div className="flex space-x-2">
                 {[1, 2, 3, 4].map((step) => (
@@ -95,21 +110,19 @@ export default function ForgotPassword() {
               </div>
             </div>
 
-            {/* Step Components Wrapper with Light Background */}
+            {/* Step Components */}
             <div className="bg-white rounded-xl p-6">
               {currentStep === 1 && (
                 <VerifyUserStep onNext={handleStep1Complete} onClose={handleClose} />
               )}
-
               {currentStep === 2 && (
-                <RequestResetStep 
+                <RequestResetStep
                   user={user}
-                  onNext={handleStep2Complete} 
+                  onNext={handleStep2Complete}
                   onClose={handleClose}
                   onBack={handleBack}
                 />
               )}
-
               {currentStep === 3 && (
                 <OTPVerificationStep
                   email={email as string}
@@ -118,7 +131,6 @@ export default function ForgotPassword() {
                   onBack={handleBack}
                 />
               )}
-
               {currentStep === 4 && (
                 <SetNewPasswordStep
                   email={email}
@@ -132,7 +144,7 @@ export default function ForgotPassword() {
             <div className="text-center text-base font-normal mt-6 text-white">
               {t("Back to")}{" "}
               <Link href="/signin" className="text-[#f5deb3]">
-                {t("Sign in")}
+                {t("Login")}
               </Link>
             </div>
           </div>
@@ -144,6 +156,6 @@ export default function ForgotPassword() {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? "urhobo", ["common"])),
+    ...(await serverSideTranslations(locale ?? "urhobo", ["common"])), // Urhobo default
   },
 });

@@ -1,8 +1,6 @@
-// pages/signup.tsx
-
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import PhoneLayout from "./components/layouts/PhoneLayout";
@@ -25,7 +23,19 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+
+  // Default language set to Urhobo
+  useEffect(() => {
+    if (i18n.language !== "urh") {
+      i18n.changeLanguage("urh");
+    }
+  }, [i18n]);
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "urh" : "en";
+    i18n.changeLanguage(newLang);
+  };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,14 +59,22 @@ export default function SignUp() {
       {/* Phone Preview */}
       <PhoneLayout />
 
-      {/* Login Form */}
+      {/* Signup Form */}
       <section className="flex justify-center items-center mx-auto">
         <div
-          className="bg-[#05353A] rounded-3xl w-[330px] md:w-[500px] h-auto"
+          className="relative bg-[#05353A] rounded-3xl w-[330px] md:w-[500px] h-auto"
           aria-label={t("signupFormAriaLabel")}
         >
+          {/* Toggle button */}
+          <button
+            onClick={toggleLanguage}
+            className="absolute top-4 right-4 px-3 py-1 rounded-lg bg-[#F9E1BE] text-[#073B3A] text-sm font-medium"
+          >
+            {i18n.language === "en" ? "Urhobo" : "English"}
+          </button>
+
           <form onSubmit={handleSignUp} className="px-4 md:px-8 py-12">
-            <h2 className="text-2xl font-semibold mb-2">{t("welcome")}</h2>
+            <h2 className="text-2xl font-semibold mb-2">{t("Welcome")}</h2>
             <p className="mb-6 text-[20px] font-medium text-[#BEBEBE]">
               {t("secureAccountCreation")}
             </p>
@@ -77,7 +95,7 @@ export default function SignUp() {
               </div>
               <div className="flex flex-col items-start">
                 <label className="block mb-3 text-base" htmlFor="lastname">
-                  {t("lastName")}
+                  {t("Last Name")}
                 </label>
                 <input
                   type="text"
@@ -92,7 +110,7 @@ export default function SignUp() {
             </div>
 
             <label className="block mb-3 text-base" htmlFor="username">
-              {t("username")}
+              {t("Username")}
             </label>
             <input
               type="text"
@@ -116,8 +134,9 @@ export default function SignUp() {
               className="w-full px-4 py-3 mb-5 rounded-md border border-[#fff] text-sm focus:outline-none"
               aria-required="true"
             />
+
             <label className="block mb-3 text-base" htmlFor="password">
-              {t("password")}
+              {t("passWord")}
             </label>
             <div>
               <input
@@ -163,7 +182,7 @@ export default function SignUp() {
             <p className="text-center text-base font-normal mt-6 text-white">
               {t("Have an Account? SignIn")}{" "}
               <Link href="/signin" className="text-[#F5DEB3]">
-                {t("Sign in")}
+                {t("Login")}
               </Link>
             </p>
           </form>
@@ -175,6 +194,6 @@ export default function SignUp() {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? "urhobo", ["common"])),
+    ...(await serverSideTranslations(locale ?? "en", ["common"])),
   },
 });

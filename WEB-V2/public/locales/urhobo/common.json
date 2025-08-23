@@ -16,6 +16,9 @@
   "Enter your email address": "Ruẹ ẹmovuẹ wẹ",
   "Don't have an account?": "Wo vwo ahwakerii?",
   "forgotPassword?": "Otarẹwan chọwẹro?",
+  "forgotPassword": "Otarẹwan chọwẹro",
+  "VerifyUser": "Ẹfuẹrẹ Ahwakeri",
+  "enterEmailToVerify": "Ruẹ ẹmovuẹ wẹ ra ẹfuẹrẹ ahwakeri",
   "Did you forget your password? We have got you": "Kẹ otarẹwan chọwẹro? Avwanre vwo we",
   "Back to": "Rhivwin ra uko",
   "Sign up to download here": "Ruọyan se sioreyọ etinẹ",
@@ -75,6 +78,9 @@
   "Re-enter your password": "Rhomaro otarẹwan",
   "The Urhobo Language": "Ephẹrẹ Urhobo",
   "Our Vision": "Omrẹ Avwanre",
+  "resetPassword": "Otarẹwan Okpokpọ",
+  "emailToVerify": "Ẹmovuẹ ra ẹfuẹrẹ ahwakeri",
+  "Send Reset Code": "Rhomaji Udo",
   "Our Mission": "Omrẹ Avwanre",
   "Our Future": "Obaro Avwanre",
   "Quick Links": "Iriẹ Rhiẹ",
@@ -117,5 +123,6 @@
   "Share Your Knowledge": "Ghare Erianriẹn Wẹ",
   "Loading": "ọchaobọ",
   "Don’t have an account?": "Wo vwo ahwakerii?",
-  "No results found": "Amrẹ ọro shakon"
+  "No results found": "Amrẹ ọro shakon",
+  "secureAccountCreation": "Nyẹruọ ahwakeri wẹ gbẹrhẹnẹde"
 }
