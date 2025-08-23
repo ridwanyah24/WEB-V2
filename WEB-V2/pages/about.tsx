@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import Head from "next/head";
@@ -8,7 +8,13 @@ import type { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 
 const About = () => {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+
+  useEffect(() => {
+    if (i18n.language !== "urhobo") {
+      i18n.changeLanguage("urhobo");
+    }
+  }, [i18n]);
 
   return (
     <div className="w-full min-h-screen ">

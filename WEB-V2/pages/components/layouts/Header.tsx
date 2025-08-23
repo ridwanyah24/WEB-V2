@@ -17,10 +17,10 @@ function Header() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-  if (i18n.language !== "urhobo") {
-    i18n.changeLanguage("urhobo");
-  }
-}, [i18n]);
+    if (i18n.language !== "urhobo") {
+      i18n.changeLanguage("urhobo");
+    }
+  }, [i18n]);
 
   // Change language
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

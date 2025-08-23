@@ -1,8 +1,7 @@
-// pages/signin.tsx
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import PhoneLayout from "./components/layouts/PhoneLayout";
@@ -23,6 +22,14 @@ export default function SignIn() {
     (state) => state.signin,
   );
   const [showPassword, setShowPassword] = useState(false);
+  const { t, i18n } = useTranslation("common");
+
+  // Default language set to Urhobo
+  useEffect(() => {
+    if (i18n.language !== "ur") {
+      i18n.changeLanguage("ur");
+    }
+  }, [i18n]);
 
   const handleChange = (field: string, value: string) => {
     dispatch(updateField({ [field]: value }));
@@ -40,16 +47,29 @@ export default function SignIn() {
       toast.error(response.error);
     }
   };
-  const { t } = useTranslation("common");
+
+  // toggle between English and Urhobo
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "ur" : "en";
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <main className="min-h-screen text-[#fff] bg-[#E9F9F9] grid grid-cols-1 lg:grid-cols-2">
       <PhoneLayout />
       <section className="flex justify-center items-center mx-auto">
         <div
-          className="bg-[#05353A] rounded-3xl w-[330px] md:w-[500px] h-[570px]"
+          className="bg-[#05353A] rounded-3xl w-[330px] md:w-[500px] h-[620px] relative"
           aria-label="Login form"
         >
+          {/* 🔘 Language toggle button */}
+          <button
+            onClick={toggleLanguage}
+            className="absolute top-4 right-4 px-3 py-1 cursor-pointer rounded-md bg-[#F9E1BE] text-[#073B3A] font-semibold text-sm"
+          >
+            {i18n.language === "ur" ? "English" : "Urhobo"}
+          </button>
+
           <form onSubmit={handleLogin} className="px-4 md:px-8 py-12">
             <h2 className="text-2xl font-semibold mb-2">{t("welcomeBack")}</h2>
             <p className="mb-6 text-[20px] font-medium text-[#BEBEBE]">
@@ -133,6 +153,7 @@ export default function SignIn() {
     </main>
   );
 }
+
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {

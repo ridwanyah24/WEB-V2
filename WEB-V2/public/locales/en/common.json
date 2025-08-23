@@ -10,7 +10,10 @@
   "Terms of Service": "Terms of Service",
   "Welcome Message": "Welcome to the Urhobo Language Learning Platform",
   "Home": "Home",
+  "emailAddress": "Email Address",
   "Back to": "Back to",
+  "welcomeBack": "Welcome Back",
+  "signUp": "signUp",
   "Sign up to download here": "Sign up to download here",
   "Enter your new password": "Enter your new password",
   "Recover Password": "Recover Password",
@@ -29,7 +32,7 @@
   "Saved": "Saved",
   "Log out": "Log out",
   "Username": "Username",
-  "Password": "Password",
+  "passWord": "password",
   "History": "History",
   "Email Address": "Email Address",
   "Search Guọnọ": "Search Guọnọ",
@@ -98,5 +101,7 @@
   "Contribute to the Encyclopedia_description": "Do you have knowledge about Urhobo language or culture to share? Help us expand this resource for future generations.",
   "Share Your Knowledge": "Share Your Knowledge",
   "Loading": "Loading",
-  "No results found": "No results found"
+  "No results found": "No results found",
+  "forgotPassword?": "forgotPassword?"
+
 }
