@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+
+:root {
+  /* colors */
+  --primary-clr: #05353a;
+  --secondary-clr: #2c5282;
+
+  /* background color */
+  --background-clr: #f2feff;
+
+  /* font weight */
+  --font-sm: 400;
+  --font-md: 600;
+
+  /* font sizes */
+  --textsm: 1rem; /* 16px*/
+  --textmd: 1.125rem; /* 18px*/
+  --textxl: 1.25rem; /*20px;*/
+  --text-lg: 3.375rem; /*54px*/
+
+  --xs: 1rem;
+  --ms: 1.25rem;
+  --ls: 1.5rem;
+}
+
+* {
+  :before,
+  :after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--background-clr);
+}
+a:hover,
+a:focus {
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+.text-primary {
+  color: var(--primary-clr);
+}
+
+.text-secondary {
+  color: var(--secondary-clr);
+}
+
+.bg-background {
+  background-color: var(--background-clr);
+}
+
+.font-weight-sm {
+  font-weight: var(--font-sm);
+}
+
+.font-weight-md {
+  font-weight: var(--font-md);
+}
+
+.text-sm {
+  font-size: var(--font-sm);
+}
+
+.text-md {
+  font-size: var(--font-md);
+}
+
+.text-xl {
+  font-size: var(--font-xl);
+}
+
+.text-lg {
+  font-size: var(--font-lg);
+}
