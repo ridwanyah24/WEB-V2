@@ -75,7 +75,10 @@ interface WordState {
 interface Word {
   word: string;
   meaning: string;
-  image?: any;
+  photo: {
+    url: string;
+    type: "photo" | string; // restrict to "photo" if that's the only possible type
+  };
 }
 
 interface SearchResult {

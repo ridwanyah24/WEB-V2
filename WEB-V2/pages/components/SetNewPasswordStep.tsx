@@ -69,7 +69,6 @@ const SetNewPasswordStep: React.FC<SetNewPasswordStepProps> = ({ email, resetTok
 
     try {
       const result = await resetPassword(email, resetToken, password, confirmPassword);
-
       if (result.success) {
         toast.success(result.message || "Password reset successfully");
         setTimeout(() => {

@@ -5,7 +5,7 @@ import { MdClose } from "react-icons/md";
 import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { RiLoader2Fill } from "react-icons/ri";
 import { toast } from "react-hot-toast";
-import { updateName } from "@/utils/api-service";
+import { updateName, updateProfileImage } from "@/utils/api-service";
 
 interface ProfileProps {
   closeModal: () => void;
@@ -13,34 +13,58 @@ interface ProfileProps {
 
 const ProfileModal: React.FC<ProfileProps> = ({ closeModal }) => {
   const [newName, setNewName] = useState("");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // base64 string
   const [updateStarted, setUpdateStarted] = useState(false);
 
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.signin);
   const { user } = useAppSelector((state) => state.user);
 
-  const handleUpdateName = async () => {
-    if (!newName.trim()) {
-      toast.error("Please enter a new name");
+  // Convert uploaded file to base64
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSelectedImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUpdateProfile = async () => {
+    if (!newName.trim() && !selectedImage) {
+      toast.error("Please enter a new name or select a picture");
       return;
     }
 
-    const firstName = newName.split(" ")[0];
-    const lastName = newName.split(" ").slice(1).join(" ");
+    const firstName = newName.split(" ")[0] || user?.firstName || "";
+    const lastName =
+      newName.split(" ").slice(1).join(" ") || user?.lastName || "";
 
     setUpdateStarted(true);
 
     try {
-      const result = await updateName(firstName, lastName, token!, dispatch);
-
-      if (result.success) {
-        toast.success("Update successful");
-        closeModal();
-      } else {
-        toast.error(result.error || "Update failed");
+      // update name
+      if (newName.trim()) {
+        const nameResult = await updateName(firstName, lastName, token!, dispatch);
+        if (!nameResult.success) {
+          toast.error(nameResult.error || "Name update failed");
+        }
       }
+
+      // update profile picture
+      if (selectedImage) {
+        const imgResult = await updateProfileImage(selectedImage, token!, dispatch);
+        if (!imgResult.success) {
+          toast.error(imgResult.error || "Image update failed");
+        }
+      }
+
+      toast.success("Profile updated successfully");
+      closeModal();
     } catch {
-      toast.error("Update failed");
+      toast.error("Profile update failed");
     } finally {
       setUpdateStarted(false);
     }
@@ -60,19 +84,21 @@ const ProfileModal: React.FC<ProfileProps> = ({ closeModal }) => {
         <div className="flex justify-center mb-6 relative">
           <div className="relative">
             <Image
-              src="/man.png"
+              src={selectedImage || "/man.png"}
               alt="Profile of user"
-              className="rounded-full cursor-pointer"
+              className="rounded-full cursor-pointer object-cover"
               width="100"
               height="100"
             />
-            <button
-              className="absolute bottom-0 right-0 bg-[#05353A] text-white p-2 rounded-full hover:bg-[#05353A]/90 transition-colors"
-              onClick={() => console.log("Edit profile picture clicked")}
-              aria-label="Edit profile picture"
-            >
+            <label className="absolute bottom-0 right-0 bg-[#05353A] text-white p-2 rounded-full hover:bg-[#05353A]/90 transition-colors cursor-pointer">
               <FiEdit size={16} />
-            </button>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
+              />
+            </label>
           </div>
         </div>
 
@@ -98,16 +124,11 @@ const ProfileModal: React.FC<ProfileProps> = ({ closeModal }) => {
               onChange={(e) => setNewName(e.target.value)}
             />
           </div>
-          <div className="flex justify-center">
-            <button className="text-red-500 font-medium mt-2">
-              Delete Account
-            </button>
-          </div>
         </div>
 
         <div className="mt-6 flex">
           <button
-            onClick={handleUpdateName}
+            onClick={handleUpdateProfile}
             disabled={updateStarted}
             className="bg-[#05353A] text-white py-2 px-6 w-full rounded-lg font-medium flex items-center justify-center disabled:opacity-50"
           >

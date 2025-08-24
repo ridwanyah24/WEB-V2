@@ -74,7 +74,7 @@ function Header() {
             href="/signin"
             className="flex items-center justify-center gap-2 bg-[#05353A] text-white py-3 rounded-lg w-[100px] hover:opacity-90 transition"
           >
-            {t("Sign in")}
+            {t("Login")}
           </Link>
 
           {/* Language dropdown */}
@@ -142,7 +142,7 @@ function Header() {
               href="/signin"
               className="flex items-center justify-center gap-2 bg-[#05353A] text-white py-3 rounded-lg w-full hover:opacity-90 transition"
             >
-              {t("Sign in")}
+              {t("Login")}
             </Link>
 
             <select

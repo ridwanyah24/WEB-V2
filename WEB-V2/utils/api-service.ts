@@ -42,7 +42,7 @@ export const signIn = async (
 // sign up
 export const signUp = async (firstName: string, lastName: string, username: string, email: string, password: string) => {
   try {
-    const res = await api.post("/auth/register", {firstName, lastName, username, email, password});
+    const res = await api.post("/auth/register", { firstName, lastName, username, email, password });
     return {
       success: true,
       message: res.data.message || "Verification email sent",
@@ -77,6 +77,41 @@ export const resendOTP = async (email: string) => {
     return {
       success: false,
       error: error.response?.data?.message || "Failed to resend OTP",
+    };
+  }
+};
+
+
+// update profile image
+export const updateProfileImage = async (
+  imageData: string,
+  token: string,
+  dispatch: any
+) => {
+  try {
+    const res = await api.post(
+      "/users/me/profile-picture",
+      { imageData }, // backend expects { imageData: "base64string" }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    // update redux store
+    // dispatch(setUser(res.data));
+
+    // persist in session
+    // if (typeof window !== "undefined") {
+    //   sessionStorage.setItem("user", JSON.stringify(res.data));
+    // }
+
+    return { success: true, user: res.data };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.response?.data?.message || "Profile update failed",
     };
   }
 };
@@ -143,12 +178,13 @@ export const logOut = async (dispatch: any, token: any) => {
     // })
     dispatch(clearUser());
     dispatch(logout());
-    
+
     return { success: true, message: "Logged out successfully" };
   } catch (error: any) {
     return { success: false, error: error.response?.data?.message };
   }
 };
+
 
 // word of day
 export const wordOfDay = async (dispatch: any) => {
@@ -163,7 +199,10 @@ export const wordOfDay = async (dispatch: any) => {
       setWordOfDay({
         word: res.data.word_of_day.word,
         meaning: res.data.word_of_day.meaning,
-        image: res.data.word_of_day.photo.url || "/images/dish.svg",
+        photo: {
+          url: res.data.word_of_day.photo.url || "/images/dish.svg",
+          type: res.data.word_of_day.photo.type || "photo",
+        },
       }),
     );
 
@@ -179,7 +218,10 @@ export const wordOfDay = async (dispatch: any) => {
         word: "Dish",
         meaning:
           "A dish refers to a prepared or cooked item of food that is served as part of a meal.",
-        image: "/images/dish.svg",
+        photo: {
+          url:  "/images/dish.svg",
+          type: "photo",
+        },
       }),
     );
 

@@ -27,14 +27,20 @@ interface SearchResult {
 interface Word {
   word: string;
   meaning: string;
-  image: string;
+  photo: {
+    url: string;
+    type: "photo" | string;
+  };
 }
 
 function HomeSection() {
   const [word, setWord] = useState<Word>({
     word: "",
     meaning: "",
-    image: "/images/dish.svg",
+    photo: {
+      url: "/images/dish.svg",
+      type: "photo",
+    },
   });
   const router = useRouter();
   const { token } = useAppSelector((state) => state.signin);
@@ -96,7 +102,10 @@ function HomeSection() {
       setWord({
         word: "",
         meaning: "",
-        image: "/images/dish.svg",
+        photo: {
+          url: "/images/dish.svg",
+          type: "photo",
+        },
       });
     }
   };
@@ -143,20 +152,21 @@ function HomeSection() {
 
         {/* Search Results Dropdown */}
         {searchQuery.trim() !== "" && searchResults.length > 0 && (
-          <div className="relative z-50 w-full max-w-[645px] mx-auto bg-[#05353A] rounded-xl shadow-lg overflow-hidden">
+          <div className="relative z-50 w-full max-w-[645px] mx-auto bg-[#0A2E30] rounded-xl shadow-lg ">
             {isLoading ? (
-              <div className="p-4 text-white text-center">Loading...</div>
+              <div className="p-4 text-gray-200 text-center">Loading...</div>
             ) : (
               <div className="max-h-60 overflow-y-auto">
                 {searchResults.map((result, index) => (
                   <div
                     key={index}
-                    className="p-3 text-white hover:bg-[#F5DEB3] hover:text-[#05353A] cursor-pointer "
+                    className="p-3 text-gray-100 cursor-pointer transition-all duration-200 ease-in-out
+               hover:bg-[#1C4A4D] hover:text-white hover:shadow-md hover:scale-[1.02] rounded-lg mx-1 my-1"
                     onClick={() => handleWordClick(result)}
                   >
-                    <div className="font-medium">{result.word}</div>
+                    <div className="font-semibold text-base">{result.word}</div>
                     {result.eyuo && (
-                      <div className="text-sm text-gray-300 hover:text-[#05353A]">
+                      <div className="text-sm text-gray-400 group-hover:text-gray-200">
                         {result.eyuo}
                       </div>
                     )}
@@ -214,7 +224,7 @@ function HomeSection() {
             </div>
             <div className="mt-4 md:mt-0 md:w-1/3 flex justify-center">
               <Image
-                src={word.image || "/images/dish.svg"}
+                src={word?.photo?.url || "/images/dish.svg"}
                 alt="Word illustration"
                 width={110}
                 height={110}

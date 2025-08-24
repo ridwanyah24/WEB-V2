@@ -13,25 +13,39 @@ const Hero = () => {
     const userAgent = typeof window !== "undefined" ? navigator.userAgent : "";
 
     if (/android/i.test(userAgent)) {
+      // Android devices
       setPlatform("android");
-      setDownloadLink("https://apps.apple.com/ng/app/6744582441");
+      setDownloadLink("https://play.google.com/store/apps/details?id=com.guono.mobile");
       setButtonLabel("Play Store");
       setIconSrc("/icons/android.png");
-    } else if (
-      /iPad|iPhone|iPod/.test(userAgent) &&
-      !(window as unknown as { MSStream?: unknown }).MSStream
-    ) {
+
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !(window as unknown as { MSStream?: unknown }).MSStream) {
+      // iOS devices
       setPlatform("ios");
-      setDownloadLink(
-        "https://play.google.com/store/apps/details?id=com.guono.mobile",
-      );
-      setButtonLabel("App Store");
-      setIconSrc("/icons/apple-store.png");
-    } else {
-      setPlatform("other");
       setDownloadLink("https://apps.apple.com/ng/app/6744582441");
       setButtonLabel("App Store");
       setIconSrc("/icons/apple-store.png");
+
+    } else if (/Win/i.test(userAgent)) {
+      // Windows desktops
+      setPlatform("windows");
+      setDownloadLink("https://play.google.com/store/apps/details?id=com.guono.mobile");
+      setButtonLabel("Play Store");
+      setIconSrc("/icons/android.png");
+
+    } else if (/Mac/i.test(userAgent)) {
+      // Mac desktops
+      setPlatform("mac");
+      setDownloadLink("https://apps.apple.com/ng/app/6744582441");
+      setButtonLabel("App Store");
+      setIconSrc("/icons/apple-store.png");
+
+    } else {
+      // Fallback for other OS (Linux, etc.)
+      setPlatform("other");
+      setDownloadLink("https://play.google.com/store/apps/details?id=com.guono.mobile");
+      setButtonLabel("Play Store");
+      setIconSrc("/icons/android.png");
     }
   }, []);
 

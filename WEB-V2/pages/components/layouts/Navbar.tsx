@@ -17,12 +17,10 @@ import { profileLinks } from "@/types";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const { token } = useAppSelector((state) => state.signin);
   const router = useRouter();
   const profileRef = useRef<HTMLDivElement>(null);
-  const languageRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
   // Toggle functions
@@ -46,12 +44,6 @@ function Navbar() {
       ) {
         setIsProfileOpen(false);
       }
-      if (
-        languageRef.current &&
-        !languageRef.current.contains(event.target as Node)
-      ) {
-        setIsLanguageOpen(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -63,7 +55,7 @@ function Navbar() {
       const result = await logOut(dispatch, token);
       if (result.success) {
         toast.success("Logout successful");
-        router.push("/signin");
+        router.push("/");
       } else {
         toast.error(result.error || "Logout failed");
       }
@@ -73,60 +65,37 @@ function Navbar() {
   };
 
   // Language switching
-  const { i18n } = useTranslation();
-  const locales = ["en", "urhobo"];
+  const { i18n, t } = useTranslation("common");
+  const locales = [
+    { code: "en", label: "English" },
+    { code: "urhobo", label: "Urhobo" },
+  ];
 
   const changeLanguage = (lng: string) => {
     const { pathname, asPath, query } = router;
     i18n.changeLanguage(lng);
     router.push({ pathname, query }, asPath, { locale: lng });
-    setIsLanguageOpen(false);
   };
 
-  const { t } = useTranslation("common");
-
   return (
-    <div className="flex py-6 items-center justify-between   space-x-4">
-      {/* Left-aligned controls */}
+    <div className="flex py-6 items-center justify-between space-x-4">
+      {/* Left controls */}
       <div className="flex items-center space-x-4">
-        {/* Stacked Language Switcher */}
-        <div
-          ref={languageRef}
-          className="relative h-8 w-12  rounded-md md:w-14"
-          onMouseEnter={() => setIsLanguageOpen(true)}
-          onMouseLeave={() => setIsLanguageOpen(false)}
+        {/* Language Dropdown */}
+        <select
+          value={router.locale}
+          onChange={(e) => changeLanguage(e.target.value)}
+          className="border border-[#05353A]/30 rounded-md px-3 py-1 bg-white text-[#05353A] font-medium focus:outline-none focus:ring-1 focus:ring-[#05353A] cursor-pointer"
         >
-          {locales.map((lng, index) => (
-            <button
-              key={lng}
-              onClick={() => changeLanguage(lng)}
-              className={`absolute top-0 left-0  w-full  h-full flex items-center justify-center rounded-md transition-all duration-500 ${
-                router.locale === lng
-                  ? " text-[#05353a] z-10"
-                  : "bg-[#05353a] text-white "
-              }`}
-              style={{
-                transform: isLanguageOpen
-                  ? `translateY(${index * 120}%)`
-                  : index === locales.findIndex((l) => l === router.locale)
-                    ? "translateY(0)"
-                    : `translateY(${index > 0 ? 10 : -10}px)`,
-                opacity: isLanguageOpen || router.locale === lng ? 1 : 0,
-                zIndex: isLanguageOpen
-                  ? 10 - index
-                  : router.locale === lng
-                    ? 10
-                    : 0,
-              }}
-              aria-label={`Switch to ${lng === "en" ? "English" : "Urhobo"}`}
-            >
-              {lng === "en" ? "ENG" : "URH"}
-            </button>
+          {locales.map((lng) => (
+            <option key={lng.code} value={lng.code}>
+              {lng.label}
+            </option>
           ))}
-        </div>
+        </select>
 
         {/* Profile dropdown */}
-        <div className="relative " ref={profileRef}>
+        <div className="relative" ref={profileRef}>
           <button
             onClick={toggleProfile}
             className="flex items-center focus:outline-none"

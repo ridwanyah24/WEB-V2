@@ -6,7 +6,7 @@ import type { GetStaticProps } from "next";
 
 export default function Home() {
   return (
-    <div className=" bg-[#f2feff] min-h-[100vh]">
+    <div className="bg-[#f2feff] min-h-[100vh]">
       <Header/>
       <main className="container w-full max-w-7xl mx-auto">
         <Hero />
