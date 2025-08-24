@@ -7,7 +7,7 @@ const Hero = () => {
   const [downloadLink, setDownloadLink] = useState("");
   const [buttonLabel, setButtonLabel] = useState("");
   const [iconSrc, setIconSrc] = useState("");
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
 
   useEffect(() => {
     const userAgent = typeof window !== "undefined" ? navigator.userAgent : "";
@@ -48,6 +48,12 @@ const Hero = () => {
       setIconSrc("/icons/android.png");
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (i18n.language !== "urhobo") {
+  //     i18n.changeLanguage("urhobo");
+  //   }
+  // }, [i18n]);
 
   return (
     <section className="flex text-center items-center flex-col mt-10 p-4">

@@ -10,11 +10,11 @@ import { useTranslation } from "next-i18next";
 const About = () => {
   const { t, i18n } = useTranslation("common");
 
-  useEffect(() => {
-    if (i18n.language !== "urhobo") {
-      i18n.changeLanguage("urhobo");
-    }
-  }, [i18n]);
+  // useEffect(() => {
+  //   if (i18n.language !== "urhobo") {
+  //     i18n.changeLanguage("urhobo");
+  //   }
+  // }, [i18n]);
 
   return (
     <div className="w-full min-h-screen ">

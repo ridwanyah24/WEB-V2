@@ -109,21 +109,21 @@ const TermsAndConditions = () => {
   ];
 
   return (
-    <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="relative bg-[#05353A] p-6 sm:p-8 text-white flex items-center">
-          {/* Back Button */}
-          <button
-            onClick={() => router.back()}
-            className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/60"
-            aria-label="Go back"
-          >
-            <IoArrowBack size={22} className="text-white" />
-          </button>
+    <>
+      {/* Back Button (Fixed Left) */}
+      <button
+        onClick={() => router.back()}
+        className="fixed lg:top-20 top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full bg-[#05353A] text-white hover:bg-[#06494f] transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-white/60"
+        aria-label="Go back"
+      >
+        <IoArrowBack size={22} className="text-white" />
+        <span className="text-sm font-medium">Back</span>
+      </button>
 
-          {/* Centered Title + Date */}
-          <div className="flex-1 text-center">
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-[#05353A] p-6 sm:p-8 text-white text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-2">
               {t("Terms and Conditions")}
             </h2>
@@ -136,44 +136,44 @@ const TermsAndConditions = () => {
               })}
             </p>
           </div>
-        </div>
 
-        {/* Content */}
-        <div className="p-6 sm:p-8">
-          <div className="prose prose-lg max-w-none">
-            {sections.map((section, index) => (
-              <section key={index} className="mb-10 last:mb-0">
-                <h3 className="text-2xl font-bold text-[#05353A] mb-4">
-                  {t(section.title)}
-                </h3>
-                <p className="text-gray-700 mb-4">{t(section.content)}</p>
+          {/* Content */}
+          <div className="p-6 sm:p-8">
+            <div className="prose prose-lg max-w-none">
+              {sections.map((section, index) => (
+                <section key={index} className="mb-10 last:mb-0">
+                  <h3 className="text-2xl font-bold text-[#05353A] mb-4">
+                    {t(section.title)}
+                  </h3>
+                  <p className="text-gray-700 mb-4">{t(section.content)}</p>
 
-                {section.points && (
-                  <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-700">
-                    {section.points.map((point, i) => (
-                      <li key={i}>{t(point)}</li>
-                    ))}
-                  </ul>
+                  {section.points && (
+                    <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-700">
+                      {section.points.map((point, i) => (
+                        <li key={i}>{t(point)}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {section.additional && (
+                    <p className="text-gray-700">{t(section.additional)}</p>
+                  )}
+                </section>
+              ))}
+            </div>
+
+            {/* Footer Note */}
+            <div className="mt-12 pt-6 border-t border-gray-200">
+              <p className="text-center text-gray-500 text-sm">
+                {t(
+                  "By using Guọnọ, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
                 )}
-
-                {section.additional && (
-                  <p className="text-gray-700">{t(section.additional)}</p>
-                )}
-              </section>
-            ))}
-          </div>
-
-          {/* Footer Note */}
-          <div className="mt-12 pt-6 border-t border-gray-200">
-            <p className="text-center text-gray-500 text-sm">
-              {t(
-                "By using Guọnọ, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
-              )}
-            </p>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
 
   );
 };

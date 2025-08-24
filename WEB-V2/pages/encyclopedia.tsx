@@ -95,7 +95,8 @@ const Encyclopedia = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories.map((category, index) => (
               <Link
-                href={`/encyclopedia/${category.title.toLowerCase().replace(/\s+/g, "-")}`}
+                // href={`/encyclopedia/${category.title.toLowerCase().replace(/\s+/g, "-")}`}
+                href={"#"}
                 key={index}
                 className="group"
               >

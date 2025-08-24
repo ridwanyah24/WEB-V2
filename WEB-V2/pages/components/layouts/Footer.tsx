@@ -1,6 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { useAppDispatch } from "@/types/hooks";
+import { setLanguage } from "@/store/changeLangSlice";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -52,7 +55,17 @@ const socialLinks = [
 ];
 
 const Footer = () => {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    if (router.pathname === "/" && i18n.language !== "urhobo") {
+      i18n.changeLanguage("urhobo");
+      dispatch(setLanguage("urhobo")); // Ensure Redux state is also updated
+    }
+  }, [router.pathname, i18n]);
+
   return (
     <footer
       className=" bg-[#05353A] text-white py-10 px-6"

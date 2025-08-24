@@ -50,7 +50,6 @@ export default function SignUp() {
     } else {
       toast.error(result.error);
     }
-
     setSubmissionStarted(false);
   };
 

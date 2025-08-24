@@ -5,28 +5,28 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { LiaTimesSolid } from "react-icons/lia";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-
+import { RootState } from "@/store/store";
+import { setLanguage } from "@/store/changeLangSlice";
+import { useAppDispatch, useAppSelector } from "@/types/hooks";
+// import your slice actions
 
 function Header() {
-
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { t, i18n } = useTranslation("common");
+  const dispatch = useAppDispatch();
+
+  // Grab current language from Redux
+  const language = useAppSelector((state: RootState) => state.language.language);
 
   // Toggle menu state
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  useEffect(() => {
-    if (i18n.language !== "urhobo") {
-      i18n.changeLanguage("urhobo");
-    }
-  }, [i18n]);
-
   // Change language
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang = e.target.value;
-    i18n.changeLanguage(lang);
-    // changes global language context
+    const lang = e.target.value as "en" | "urhobo";
+    dispatch(setLanguage(lang)); // update Redux state
+    i18n.changeLanguage(lang); // sync with i18n
   };
 
   // Define navigation links
@@ -36,6 +36,14 @@ function Header() {
     { label: "Encyclopedia", href: "/encyclopedia" },
     { label: "Donate", href: "/donate" },
   ];
+
+  useEffect(() => {
+    if (router.pathname === "/" && i18n.language !== "urhobo") {
+      i18n.changeLanguage("urhobo");
+      dispatch(setLanguage("urhobo")); // Ensure Redux state is also updated
+    }
+  }, [router.pathname, i18n]);
+
 
   return (
     <header className="max-w-7xl mx-auto w-full">
@@ -70,22 +78,23 @@ function Header() {
 
         {/* Desktop Actions: Sign in + Language Selector */}
         <div className="hidden md:flex items-center gap-3">
+
+          {/* Language dropdown */}
+          <select
+            onChange={handleLanguageChange}
+            value={language} // controlled by Redux
+            className="border border-[#05353A] text-[#05353A] rounded-lg px-2 py-2 text-sm focus:outline-none"
+          >
+            <option value="urhobo">Urhobo</option>
+            <option value="en">English</option>
+          </select>
+
           <Link
             href="/signin"
             className="flex items-center justify-center gap-2 bg-[#05353A] text-white py-3 rounded-lg w-[100px] hover:opacity-90 transition"
           >
             {t("Login")}
           </Link>
-
-          {/* Language dropdown */}
-          <select
-            onChange={handleLanguageChange}
-            defaultValue={"urhobo"} // default to Urhobo
-            className="border border-[#05353A] text-[#05353A] rounded-lg px-2 py-2 text-sm focus:outline-none"
-          >
-            <option value="urhobo">Urhobo</option>
-            <option value="en">English</option>
-          </select>
         </div>
 
         {/* Mobile Menu Button */}
@@ -138,21 +147,21 @@ function Header() {
             ))}
 
             {/* Sign in + Language */}
+            <select
+              onChange={handleLanguageChange}
+              value={language}
+              className="border border-[#05353A] text-[#05353A] rounded-lg px-2 py-2 text-sm focus:outline-none"
+            >
+              <option value="urhobo">Urhobo</option>
+              <option value="en">English</option>
+            </select>
+
             <Link
               href="/signin"
               className="flex items-center justify-center gap-2 bg-[#05353A] text-white py-3 rounded-lg w-full hover:opacity-90 transition"
             >
               {t("Login")}
             </Link>
-
-            <select
-              onChange={handleLanguageChange}
-              defaultValue={"urhobo"}
-              className="border border-[#05353A] text-[#05353A] rounded-lg px-2 py-2 text-sm focus:outline-none"
-            >
-              <option value="urhobo">Urhobo</option>
-              <option value="en">English</option>
-            </select>
           </div>
         )}
       </div>
