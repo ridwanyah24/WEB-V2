@@ -2,8 +2,19 @@ import React from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import type { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { IoArrowBack } from "react-icons/io5"; // Back arrow icon
+
+
 const PrivacyPolicy = () => {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+  const router = useRouter();
+  useEffect(() => {
+    if (i18n.language !== "en") {
+      i18n.changeLanguage("en");
+    }
+  }, [i18n]);
 
   const sections = [
     {
@@ -101,92 +112,106 @@ const PrivacyPolicy = () => {
   ];
 
   return (
-    <main className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto  backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-[#05353A] p-6 sm:p-8 text-white">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-2">
-            {t("Privacy Policy")}
-          </h2>
-          <p className="text-lg opacity-90">
-            {t("Last updated:")}{" "}
-            {new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </div>
+    <>
+      <main className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="relative bg-[#05353A] p-6 sm:p-8 text-white flex items-center">
+            {/* Back Button */}
+            <button
+              onClick={() => router.back()}
+              className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/60"
+              aria-label="Go back"
+            >
+              <IoArrowBack size={22} className="text-white" />
+            </button>
 
-        {/* Content */}
-        <div className="p-6 sm:p-8">
-          <div className="prose prose-lg max-w-none">
-            {sections.map((section, index) => (
-              <section key={index} className="mb-10 last:mb-0">
-                <h3 className="text-2xl font-bold text-[#05353A] mb-4">
-                  {t(section.title)}
-                </h3>
+            {/* Title & Last Updated */}
+            <div className="flex-1 text-center">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-2">
+                {t("Privacy Policy")}
+              </h2>
+              <p className="text-lg opacity-90">
+                {t("Last updated:")}{" "}
+                {new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            </div>
+          </div>
 
-                {section.content && (
-                  <p className="text-gray-700 mb-4">{t(section.content)}</p>
-                )}
+          {/* Content */}
+          <div className="p-6 sm:p-8">
+            <div className="prose prose-lg max-w-none">
+              {sections.map((section, index) => (
+                <section key={index} className="mb-10 last:mb-0">
+                  <h3 className="text-2xl font-bold text-[#05353A] mb-4">
+                    {t(section.title)}
+                  </h3>
 
-                {section.points && (
-                  <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-700">
-                    {section.points.map((point, i) => (
-                      <li key={i}>{t(point)}</li>
+                  {section.content && (
+                    <p className="text-gray-700 mb-4">{t(section.content)}</p>
+                  )}
+
+                  {section.points && (
+                    <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-700">
+                      {section.points.map((point, i) => (
+                        <li key={i}>{t(point)}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {section.subsections &&
+                    section.subsections.map((subsection, subIndex) => (
+                      <div key={subIndex} className="mb-4">
+                        <h3 className="text-xl font-semibold text-[#05353A] mb-2">
+                          {t(subsection.title)}
+                        </h3>
+                        {subsection.content && (
+                          <p className="text-gray-700 mb-2">
+                            {t(subsection.content)}
+                          </p>
+                        )}
+                        {subsection.points && (
+                          <ul className="list-disc pl-6 mb-2 space-y-1 text-gray-700">
+                            {subsection.points.map((point, i) => (
+                              <li key={i}>{t(point)}</li>
+                            ))}
+                          </ul>
+                        )}
+                        {subsection.additional && (
+                          <p className="text-gray-700">{t(subsection.additional)}</p>
+                        )}
+                      </div>
                     ))}
-                  </ul>
+
+                  {section.note && (
+                    <p className="text-gray-600 italic mb-4">{t(section.note)}</p>
+                  )}
+
+                  {section.additional && (
+                    <p className="text-gray-700">{t(section.additional)}</p>
+                  )}
+                </section>
+              ))}
+            </div>
+
+            {/* Footer Note */}
+            <div className="mt-12 pt-6 border-t border-gray-200">
+              <p className="text-center text-gray-500 text-sm">
+                {t(
+                  "For questions about this Privacy Policy, please contact us through our official channels."
                 )}
-
-                {section.subsections &&
-                  section.subsections.map((subsection, subIndex) => (
-                    <div key={subIndex} className="mb-4">
-                      <h3 className="text-xl font-semibold text-[#05353A] mb-2">
-                        {t(subsection.title)}
-                      </h3>
-                      {subsection.content && (
-                        <p className="text-gray-700 mb-2">
-                          {t(subsection.content)}
-                        </p>
-                      )}
-                      {subsection.points && (
-                        <ul className="list-disc pl-6 mb-2 space-y-1 text-gray-700">
-                          {subsection.points.map((point, i) => (
-                            <li key={i}>{t(point)}</li>
-                          ))}
-                        </ul>
-                      )}
-                      {subsection.additional && (
-                        <p className="text-gray-700">
-                          {t(subsection.additional)}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-
-                {section.note && (
-                  <p className="text-gray-600 italic mb-4">{t(section.note)}</p>
-                )}
-
-                {section.additional && (
-                  <p className="text-gray-700">{t(section.additional)}</p>
-                )}
-              </section>
-            ))}
-          </div>
-
-          {/* Footer Note */}
-          <div className="mt-12 pt-6 border-t border-gray-200">
-            <p className="text-center text-gray-500 text-sm">
-              {t(
-                "For questions about this Privacy Policy, please contact us through our official channels.",
-              )}
-            </p>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
+
+
   );
 };
 
