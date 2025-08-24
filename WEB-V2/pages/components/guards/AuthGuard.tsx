@@ -68,7 +68,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({
 
     // If page requires auth but user is not authenticated, redirect to signin
     if (requiresAuth && !isAuthenticated) {
-      router.replace("/signin");
+      router.replace("/");
     }
   }, [requiresAuth, bootstrapping, isAuthenticated, user, router]);
 

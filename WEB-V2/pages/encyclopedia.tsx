@@ -3,11 +3,19 @@ import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import Head from "next/head";
 import Link from "next/link";
-import { FiBookOpen } from "react-icons/fi";
 import { FaSearch, FaChevronRight } from "react-icons/fa";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import type { GetStaticProps } from "next";
+
+import { 
+  FiBookOpen  ,
+  FiUsers, 
+  FiMusic, 
+  FiMessageSquare, 
+  FiStar, 
+  FiFeather 
+} from "react-icons/fi";
 
 const Encyclopedia = () => {
   const { t } = useTranslation("common");
@@ -18,37 +26,37 @@ const Encyclopedia = () => {
       title: "Urhobo Dictionary",
       description: "Comprehensive collection of Urhobo words and meanings",
       count: "1,200+ entries",
-      icon: <FiBookOpen className="w-6 h-6" />,
+      icon: <FiBookOpen className="w-6 h-6" />, // 📖 dictionary
     },
     {
       title: "Cultural Practices",
       description: "Traditional ceremonies, rites and customs",
       count: "85+ practices",
-      icon: <FiBookOpen className="w-6 h-6" />,
+      icon: <FiUsers className="w-6 h-6" />, // 👥 community/people
     },
     {
       title: "Historical Figures",
       description: "Notable Urhobo leaders and influencers",
       count: "60+ profiles",
-      icon: <FiBookOpen className="w-6 h-6" />,
+      icon: <FiStar className="w-6 h-6" />, // ⭐ notable/important figures
     },
     {
       title: "Proverbs & Idioms",
       description: "Wisdom passed through generations",
       count: "300+ sayings",
-      icon: <FiBookOpen className="w-6 h-6" />,
+      icon: <FiMessageSquare className="w-6 h-6" />, // 💬 speech/phrases
     },
     {
       title: "Traditional Music",
       description: "Instruments, rhythms and compositions",
       count: "45+ recordings",
-      icon: <FiBookOpen className="w-6 h-6" />,
+      icon: <FiMusic className="w-6 h-6" />, // 🎵 music
     },
     {
       title: "Folktales",
       description: "Moral stories and ancestral wisdom",
       count: "120+ stories",
-      icon: <FiBookOpen className="w-6 h-6" />,
+      icon: <FiFeather className="w-6 h-6" />, // 🪶 storytelling
     },
   ];
 
@@ -74,7 +82,7 @@ const Encyclopedia = () => {
           </p>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto relative">
+          {/* <div className="max-w-2xl mx-auto relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FaSearch className="h-5 w-5 text-gray-400" />
             </div>
@@ -84,7 +92,7 @@ const Encyclopedia = () => {
               aria-label={t("Search the encyclopedia")}
               className="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#053B3A] focus:border-[#053B3A]"
             />
-          </div>
+          </div> */}
         </section>
 
         {/* Categories Grid */}
