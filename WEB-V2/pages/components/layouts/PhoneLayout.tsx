@@ -30,7 +30,7 @@ function PhoneLayout() {
   return (
     <section
       aria-hidden={true}
-      className="lg:flex lg:flex-col lg:items-center justify-center bg-[#FFFFFF] hidden"
+      className="lg:flex lg:flex-col lg:items-center justify-center bg-[#073B3A] text-white hidden"
     >
       <div className=" flex flex-col justify-between items-center">
         <Image
@@ -44,7 +44,7 @@ function PhoneLayout() {
       <a
         href={downloadLink}
         aria-label={`${platform} download`}
-        className="text-[#073B3A] -my-4 font-semibold"
+        className="text-[#ffff] -my-4 font-semibold"
       >
         {t("Sign up to download here")}
       </a>

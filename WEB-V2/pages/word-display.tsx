@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import {getWordDetails, getAutocompleteSuggestions} from "@/utils/api-service";
+import { getWordDetails, getAutocompleteSuggestions } from "@/utils/api-service";
 import { RootState } from "@/store/store";
-import { setSearchQuery, setSearchResults, WordRecord} from "@/store/wordSlice";
+import { setSearchQuery, setSearchResults, WordRecord } from "@/store/wordSlice";
 import { RiLoader2Fill } from "react-icons/ri";
 import WordDetailsHeader from "./components/WordDetailsHeader";
 
@@ -84,7 +84,7 @@ const WordDisplay = () => {
 
   const records = detailedWord?.records || [];
   console.log('records', records);
-  
+
   return (
     <div className="min-h-screen bg-[#f2feff]">
       {/* Navbar - Modernized */}
@@ -97,243 +97,111 @@ const WordDisplay = () => {
       />
 
       {/* Main Content - Modern Layout */}
-      <main className="max-w-[90rem] mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar - Sticky */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1">
+          <div className="rounded-lg shadow-sm border-2 max-w-[80rem] mx-auto border-[#05353a] overflow-hidden mb-6">
+            <div className="p-6">
+              {records.map((record, recordIndex) => (
+                <div key={recordIndex} className="mb-12">
+                  {/* Word + Translation + Part of Speech */}
+                  {record.meanings?.map((meaning, meaningIndex) => {
+                    const isEnglish = record.language === "english";
+                    const translation = isEnglish
+                      ? record.translations?.urh?.[meaningIndex]
+                      : record.translations?.en?.[meaningIndex];
 
-          {/* Main Content Area */}
-          <div className="flex-1">
-            <div className="rounded-lg shadow-sm border-2 border-[#05353a] overflow-hidden">
-            <div className="p-6 border-b border-gray-200">
-               <div className="flex items-center space-x-4">
-                 <h2 className="text-3xl font-bold text-[#05353A]">
-                   {(() => {
-                     const exactMeaning = records
-                       .flatMap(record => record.meanings || [])
-                       .find(meaning => 
-                         meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                       );
-                     
-                     if (!exactMeaning) return term;
-                     
-                     const exactRecord = records.find(record => 
-                       record.meanings?.some(meaning => 
-                         meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                       )
-                     );
-                     
-                     const isEnglish = exactRecord?.language === 'english';
-                     const translation = isEnglish 
-                       ? exactRecord?.translations?.urh?.[0] 
-                       : exactRecord?.translations?.en?.[0];
-                     
-                     return translation?.word || term;
-                   })()}
-                 </h2>
-                 <button className="p-2 bg-[#F5DEB3] rounded-full hover:bg-[#F5DEB3]/50 transition-colors">
-                   <Image
-                     src="/icons/speaker.svg"
-                     width={20}
-                     height={20}
-                     alt="Play pronunciation"
-                   />
-                 </button>
-               </div>
-             </div>
+                    return (
+                      <div key={meaningIndex} className="mb-6">
+                        {/* Header Line */}
+                        <div className="flex lg:gap-5 gap-5 items-start mb-4">
+                          <span className="mr-2 bg-[#05353a30] px-4 py-2 text-[#05353a] font-bold rounded-full">{meaningIndex + 1}</span>
+                          <div className="mt-2">
+                            <h2 className="text-xl font-bold text-[#05353A] flex items-center">
 
-              {/* Meaning */}
-              {(() => {
-                const exactMeaning = records
-                  .flatMap(record => record.meanings || [])
-                  .find(meaning => 
-                    meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                  );
-                
-                if (!exactMeaning) return null;
-                
-                const exactRecord = records.find(record => 
-                  record.meanings?.some(meaning => 
-                    meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                  )
-                );
-                
-                const isEnglish = exactRecord?.language === 'english';
-                const translation = isEnglish 
-                  ? exactRecord?.translations?.urh?.[0] 
-                  : exactRecord?.translations?.en?.[0];
-                
-                return (
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-[#05353A] mb-4">Meaning</h3>
-                    <div className="space-y-4">
-                      {exactMeaning.definitions?.length > 0 && (
-                        <div>
-                          <h4 className="font-medium text-[#05353A] mb-2">Definition</h4>
-                          <div className="text-gray-700">
-                            {exactMeaning.definitions.map((definition: string, index: number) => (
-                              <p key={index} className="mb-2">{index + 1}. {definition}</p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      
-                      {translation?.definitions && translation.definitions.length > 0 && (
-                        <div>
-                          <div className="text-gray-700">
-                            {translation.definitions.map((definition: string, index: number) => (
-                              <p key={index} className="mb-2">{definition}</p>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Part of Speech */}
-              <div className="px-6">
-                <div className="">
-                <h3 className="text-lg font-semibold text-[#05353A] mb-4">Part of Speech</h3>
-                   {(() => {
-                     const allMeanings = records.flatMap(record => {
-                       const meanings = record?.meanings || [];
-                       return meanings
-                         .filter(meaning => meaning.word?.toLowerCase() === (term as string).toLowerCase())
-                         .map(meaning => ({
-                           meaning,
-                           record,
-                           translation: record?.language === 'english' 
-                             ? record?.translations?.urh?.[meanings.indexOf(meaning)]
-                             : record?.translations?.en?.[meanings.indexOf(meaning)]
-                         }));
-                     });
-                     
-                     const uniqueMeanings = allMeanings.filter((item, index, self) => 
-                       index === self.findIndex(m => 
-                         m.record.word === item.record.word && 
-                         m.meaning.definitions?.[0] === item.meaning.definitions?.[0]
-                       )
-                     );
-                     
-                     return uniqueMeanings.map((item, index) => (
-                       <div key={index} className="flex items-start flex-col space-x-3">
-                         <div className="">
-                           <span className="text-sm capitalize">
-                             {item.meaning.partOfSpeech?.[0]}
-                           </span>
-                           <span className="text-gray-600 mx-1">-</span>
-                           <button className="font-medium">
-                             {item.translation?.word || item.meaning.word}
-                           </button>
-                         </div>
-                         {item.meaning?.definitions && (
-                           <p className="text-gray-500 text-sm italic">
-                             {item.meaning.definitions[0]}
-                           </p>
-                         )}
-                       </div>
-                     ));
-                   })()}
-                 </div>
-              </div>
-
-              {/* Examples */}
-              {(() => {
-                const exactMeaning = records
-                  .flatMap(record => record.meanings || [])
-                  .find(meaning => 
-                    meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                  );
-                
-                if (!exactMeaning || !exactMeaning.examples?.length) return null;
-                
-                const exactRecord = records.find(record => 
-                  record.meanings?.some(meaning => 
-                    meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                  )
-                );
-                
-                const isEnglish = exactRecord?.language === 'english';
-                const translation = isEnglish 
-                  ? exactRecord?.translations?.urh?.[0] 
-                  : exactRecord?.translations?.en?.[0];
-                
-                return (
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-[#05353A] mb-4">Examples</h3>
-                    <div className="space-y-4">
-                      {exactMeaning.examples.map((example: string, index: number) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex items-start space-x-2">
-                            <span className="text-sm text-[#05353A] font-medium mt-1">
-                              {index + 1}.
-                            </span>
-                            <p className="text-gray-700 flex-1">{example}</p>
-                          </div>
-                          {translation?.examples?.[index] && (
-                            <div className="ml-6">
-                              <p className="text-sm text-gray-500 italic">
-                                {translation.examples[index]}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Synonyms */}
-              {(() => {
-                const exactMeaning = records
-                  .flatMap(record => record.meanings || [])
-                  .find(meaning => 
-                    meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                  );
-                 
-                if (!exactMeaning || !exactMeaning.synonyms?.length) return null;
-                 
-                const exactRecord = records.find(record => 
-                  record.meanings?.some(meaning => 
-                    meaning.word?.toLowerCase() === (term as string).toLowerCase()
-                  )
-                );
-                 
-                const isEnglish = exactRecord?.language === 'english';
-                const translation = isEnglish 
-                  ? exactRecord?.translations?.urh?.[0] 
-                  : exactRecord?.translations?.en?.[0];
-                 
-                return (
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-[#05353A] mb-4">Synonyms</h3>
-                    <div className="space-y-4">
-                      {exactMeaning.synonyms.map((synonym, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex items-center space-x-2">
-                            <span className="px-3 py-1 text-sm bg-gray-100 text-[#05353A] rounded-full">
-                              {synonym.word}
-                            </span>
-                          </div>
-                          {translation?.synonyms?.[index] && (
-                            <div className="ml-6">
-                              <span className="text-sm text-gray-500 italic">
-                                {translation.synonyms[index].word}
+                              <p className="capitalize text-lg"> {meaning.word}{" "}</p>
+                              <span className="text-sm capitalize text-[#05353a] ml-2">
+                                ({meaning.partOfSpeech?.[0]})
                               </span>
-                            </div>
-                          )}
+                              <span className="mx-2">–</span>
+                              <span className="font-semibold text-lg">
+                                {translation?.word || ""}
+                              </span>
+                            </h2>
+
+                            {/* Definitions */}
+                            {meaning.definitions?.length > 0 && (
+                              <div className="mt-2 ml-6">
+                                <h3 className="font-semibold text-[#05353A]">Definition</h3>
+                                {meaning.definitions.map((definition, defIndex) => (
+                                  <div key={defIndex} className="mb-2">
+                                    {/* English definition */}
+                                    <p className="text-gray-700 italic ml-4">{definition}</p>
+
+                                    {/* Urhobo translation of this definition */}
+                                    {translation?.definitions?.[defIndex] && (
+                                      <p className="text-gray-500 italic ml-4">
+                                        {translation.definitions[defIndex]}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Examples */}
+                            {meaning.examples?.length > 0 && (
+                              <div className="mt-3 ml-6">
+                                <h3 className="font-semibold text-[#05353A]">Examples</h3>
+                                {meaning.examples.map((example, exIndex) => (
+                                  <div key={exIndex} className="mb-2 ml-4">
+                                    <p className="text-gray-700 font-medium ">
+                                      {exIndex + 1}. {example}
+                                    </p>
+                                    {translation?.examples?.[exIndex] && (
+                                      <p className="text-gray-500 italic ml-6 font-medium m">
+                                        {translation.examples[exIndex]}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Synonyms */}
+                            {meaning.synonyms?.length > 0 && (
+                              <div className="mt-3 ml-6">
+                                <h3 className="font-semibold text-[#05353A]">Synonyms</h3>
+                                <div className="flex flex-wrap gap-2 mt-1 ml-4">
+                                  {meaning.synonyms.map((syn, synIndex) => (
+                                    <span
+                                      key={synIndex}
+                                      className="px-3 py-1 text-sm bg-gray-100 text-[#05353A] rounded-full"
+                                    >
+                                      {syn.word}
+                                    </span>
+                                  ))}
+                                  {translation?.synonyms?.map((tsyn, tsynIndex) => (
+                                    <span
+                                      key={`tsyn-${tsynIndex}`}
+                                      className="px-3 py-1 text-sm bg-gray-200 text-gray-600 rounded-full"
+                                    >
+                                      {tsyn.word}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })()}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
