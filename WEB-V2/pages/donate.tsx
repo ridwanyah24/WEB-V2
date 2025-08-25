@@ -207,7 +207,7 @@ const DonatePage = () => {
                     <div className="mb-4">
                       <p className="text-sm text-gray-500 mb-1">{t("Wallet Address")}</p>
                       <p className="font-mono bg-gray-200 p-2 rounded break-all">
-                        T9z7Yx8Wv6Ut5Sr4Qp3Nm2Lo1Ki9Jh8Fg7De6Ct5Br
+                        0xfD62fdB875301c1D3cbbdb97aeA15a4cA6B14B7d
                       </p>
                     </div>
                     <button
@@ -218,8 +218,7 @@ const DonatePage = () => {
                     </button>
                   </div>
                 </div>
-
-
+                
                 <div className="mt-8 p-4  rounded-lg ">
                   <p className="text-sm text-gray-600 text-center">
                     {t(
@@ -234,29 +233,6 @@ const DonatePage = () => {
       </main>
 
       {/* Testimonials */}
-      {/* <section className=" py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-[#05353A] mb-8">
-            Why People Support Us
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <p className="text-gray-700 italic mb-4">
-                &#39;As an Urhobo living abroad, supporting this initiative
-                helps me stay connected to my roots.&#39;
-              </p>
-              <p className="font-medium text-[#05353A]">- Omonigho E.</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow">
-              <p className="text-gray-700 italic mb-4">
-                &#39;Preserving indigenous languages is crucial for cultural
-                diversity. I&#39;m proud to contribute.&#39;
-              </p>
-              <p className="font-medium  text-[#05353A]">- Prof. Johnson M.</p>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <Footer />
     </div>
   );

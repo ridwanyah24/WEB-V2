@@ -13,6 +13,8 @@ import { useAppDispatch, useAppSelector } from "@/types/hooks";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "next-i18next";
 import { profileLinks } from "@/types";
+import { setLanguage } from "@/store/changeLangSlice";
+import { RootState } from "@/store/store";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +29,7 @@ function Navbar() {
   // Toggle functions
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
+  const language = useAppSelector((state: RootState) => state.language.language);
 
   const openModal = (modalName: string) => {
     setActiveModal(modalName);
@@ -72,10 +75,11 @@ function Navbar() {
     { code: "urhobo", label: "Urhobo" },
   ];
 
-  const changeLanguage = (lng: string) => {
-    const { pathname, asPath, query } = router;
-    i18n.changeLanguage(lng);
-    router.push({ pathname, query }, asPath, { locale: lng });
+  // after (using Redux like handleLanguageChange)
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const lang = e.target.value as "en" | "urhobo";
+    dispatch(setLanguage(lang)); // update Redux state
+    i18n.changeLanguage(lang); // sync with i18n
   };
 
   return (
@@ -84,15 +88,12 @@ function Navbar() {
       <div className="flex items-center space-x-4">
         {/* Language Dropdown */}
         <select
-          value={router.locale}
-          onChange={(e) => changeLanguage(e.target.value)}
-          className="border border-[#05353A]/30 rounded-md px-3 py-1 bg-white text-[#05353A] font-medium focus:outline-none focus:ring-1 focus:ring-[#05353A] cursor-pointer"
+          onChange={handleLanguageChange}
+          value={language} // controlled by Redux
+          className="border border-[#05353A] text-[#05353A] rounded-lg px-2 py-2 text-sm focus:outline-none"
         >
-          {locales.map((lng) => (
-            <option key={lng.code} value={lng.code}>
-              {lng.label}
-            </option>
-          ))}
+          <option value="urhobo">Urhobo</option>
+          <option value="en">English</option>
         </select>
 
         <div className="relative" ref={profileRef}>
@@ -113,7 +114,7 @@ function Navbar() {
 
             {/* Username + Chevron */}
             <span className="flex items-center gap-1 text-sm font-medium text-gray-800">
-              <p>{user?.firstName|| "User"} {user?.lastName}</p>
+              <p>{user?.firstName || "User"} {user?.lastName}</p>
               <svg
                 className={`w-4 h-4 text-gray-600 transition-transform ${isProfileOpen ? "rotate-180" : "rotate-0"
                   }`}
