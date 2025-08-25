@@ -99,14 +99,6 @@ export const updateProfileImage = async (
         },
       }
     );
-    // update redux store
-    // dispatch(setUser(res.data));
-
-    // persist in session
-    // if (typeof window !== "undefined") {
-    //   sessionStorage.setItem("user", JSON.stringify(res.data));
-    // }
-
     return { success: true, user: res.data };
   } catch (error: any) {
     return {

@@ -27,7 +27,12 @@ const ProfileModal: React.FC<ProfileProps> = ({ closeModal }) => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setSelectedImage(reader.result as string);
+      const result = reader.result as string;
+      if (result) {
+        // Strip the prefix `data:image/...;base64,`
+        const base64Data = result.split(",")[1];
+        setSelectedImage(base64Data);
+      }
     };
     reader.readAsDataURL(file);
   };

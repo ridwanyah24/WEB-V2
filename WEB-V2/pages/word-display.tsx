@@ -101,7 +101,7 @@ const WordDisplay = () => {
       {/* Main Content - Modern Layout */}
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1">
-          <div className="rounded-lg shadow-sm border-2 max-w-[80rem] mx-auto border-[#05353a] overflow-hidden mb-6">
+          <div className="rounded-lg shadow-sm mx-auto overflow-hidden mb-6">
             <div className="p-6">
               {records.map((record, recordIndex) => {
                 // ✅ Decide which dataset to use based on global state
