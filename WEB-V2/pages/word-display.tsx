@@ -111,7 +111,7 @@ const WordDisplay = () => {
                       : record.translations?.en?.[meaningIndex];
 
                     return (
-                      <div key={meaningIndex} className="mb-6">
+                      <div key={meaningIndex} className="mb-10">
                         {/* Header Line */}
                         <div className="flex lg:gap-5 gap-5 items-start mb-4">
                           <span className="mr-2 bg-[#05353a30] px-4 py-2 text-[#05353a] font-bold rounded-full">{meaningIndex + 1}</span>
@@ -130,7 +130,7 @@ const WordDisplay = () => {
 
                             {/* Definitions */}
                             {meaning.definitions?.length > 0 && (
-                              <div className="mt-2 ml-6">
+                              <div className="mt-10 ml-6">
                                 <h3 className="font-semibold text-[#05353A]">Definition</h3>
                                 {meaning.definitions.map((definition, defIndex) => (
                                   <div key={defIndex} className="mb-2">
@@ -150,17 +150,19 @@ const WordDisplay = () => {
 
                             {/* Examples */}
                             {meaning.examples?.length > 0 && (
-                              <div className="mt-3 ml-6">
+                              <div className="mt-5 ml-6">
                                 <h3 className="font-semibold text-[#05353A]">Examples</h3>
                                 {meaning.examples.map((example, exIndex) => (
                                   <div key={exIndex} className="mb-2 ml-4">
-                                    <p className="text-gray-700 font-medium ">
+                                    <p className="text-gray-700 font-medium">
                                       {exIndex + 1}. {example}
                                     </p>
                                     {translation?.examples?.[exIndex] && (
-                                      <p className="text-gray-500 italic ml-6 font-medium m">
-                                        {translation.examples[exIndex]}
-                                      </p>
+                                      <span>
+                                        <p className="text-[#05353a] ml-6 font-medium mt-5">
+                                          {translation.examples[exIndex]}
+                                        </p>
+                                      </span>
                                     )}
                                   </div>
                                 ))}
@@ -169,7 +171,7 @@ const WordDisplay = () => {
 
                             {/* Synonyms */}
                             {meaning.synonyms?.length > 0 && (
-                              <div className="mt-3 ml-6">
+                              <div className="mt-5 ml-6">
                                 <h3 className="font-semibold text-[#05353A]">Synonyms</h3>
                                 <div className="flex flex-wrap gap-2 mt-1 ml-4">
                                   {meaning.synonyms.map((syn, synIndex) => (
