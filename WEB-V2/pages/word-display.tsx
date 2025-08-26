@@ -174,7 +174,7 @@ const WordDisplay = () => {
                                         </p>
                                         {translation?.examples?.[exIndex] && (
                                           <span>
-                                            <p className="text-[#05353a] ml-6 font-medium mt-5">
+                                            <p className="text-[#05353a80] ml-6 font-medium mt-2 italic">
                                               {translation.examples[exIndex]}
                                             </p>
                                           </span>

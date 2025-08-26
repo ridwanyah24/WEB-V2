@@ -21,6 +21,21 @@ const ProfileModal: React.FC<ProfileProps> = ({ closeModal }) => {
   const { user } = useAppSelector((state) => state.user);
 
   // Convert uploaded file to base64
+  // const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     const result = reader.result as string;
+  //     if (result) {
+  //       // Keep the full Data URL (don't strip prefix)
+  //       setSelectedImage(result);
+  //     }
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -89,11 +104,11 @@ const ProfileModal: React.FC<ProfileProps> = ({ closeModal }) => {
         <div className="flex justify-center mb-6 relative">
           <div className="relative">
             <Image
-              src={selectedImage || "/man.png"}
+              src={selectedImage ? `data:image/png;base64,${selectedImage}` : "/man.png"}
               alt="Profile of user"
               className="rounded-full cursor-pointer object-cover"
-              width="100"
-              height="100"
+              width={100}
+              height={100}
             />
             <label className="absolute bottom-0 right-0 bg-[#05353A] text-white p-2 rounded-full hover:bg-[#05353A]/90 transition-colors cursor-pointer">
               <FiEdit size={16} />
